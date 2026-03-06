@@ -23,3 +23,10 @@ enable_testing()
 add_executable(run_tests tests/test_logic.cpp)
 target_link_libraries(run_tests PRIVATE GTest::gtest_main)
 add_test(NAME MyTests COMMAND run_tests)
+
+# 6. Enable Doxygen
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    # Point to your Doxyfile or let CMake generate one
+    doxygen_add_docs(docs src/ README.md)
+endif()
