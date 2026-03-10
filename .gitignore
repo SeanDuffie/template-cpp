@@ -39,3 +39,9 @@
 
 # debug information files
 *.dwo
+
+# Project
+vcpkg_installed/
+docs/
+build/
+.vscode/

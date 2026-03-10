@@ -4,7 +4,6 @@
     "description": "A professional C++ template",
     "dependencies": [
         "fmt",
-        "gtest",
-        "loguru"
+        "gtest"
     ]
 }
