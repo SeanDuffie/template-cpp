@@ -1,14 +1,29 @@
-# template-cpp
+# template-cpp <!-- omit in toc -->
+
 A starting point for various C++ projects.
 
+## 📚 Documentation
+
+Documentation is integrated directly into the CMake build process.
+
+### Initializing Doxygen
+
+1. Generate the default "Doxyfile" using `doxygen -g`.
+2. Make the following edits to the Doxyfile keys:
+   1. `PROJECT_NAME = "Project Name"`
+   2. `RECURSIVE = YES` (Scans the "./src/ folder)
+   3. `OUTPUT_DIRECTORY = docs` (Where the HTML is saved)
+   4. `USE_MDFILE_AS_MAINPAGE = README.md` (Makes the README the "Home" page)
+
+### Generating Docs
+You can generate the HTML documentation using the `docs` target:
+``` bash
+cmake --build build --target docs
+```
 
 ## Installation
 
-### vcpkg
-
-`vcpkg` is a package manager for C++, similar to how `uv` works for Python. To install it, it must be downloaded and compiled from source, then associated with the environment.
-
-#### 1. Build Tools
+### 1. Build Tools
 
 ##### Windows
 1. Git
@@ -29,10 +44,14 @@ sudo apt update
 sudo apt install build-essential cmake git curl zip unzip tar
 ```
 
+### vcpkg
+
+`vcpkg` is a package manager for C++, similar to how `uv` works for Python. To install it, it must be downloaded and compiled from source, then associated with the environment.
+
 #### 2. Install vcpkg
 
 1. Clone the repo: `git clone https://github.com/microsoft/vcpkg.git`
-   1. NOTE: Pick a permanent location, like root or home.
+   1. NOTE: Pick a permanent location, like root or home. (important)
 2. Bootstrap:
 ##### Windows
 
@@ -46,9 +65,10 @@ bootstrap-vcpkg.bat
 ``` bash
 cd vcpkg
 ./bootstrap-vcpkg.sh
-
 ```
+
 #### 3. Enable Global Integration (optional, but recommended)
+
 ``` bash
 # From inside the vcpkg directory
 ./vcpkg integrate install
@@ -60,6 +80,7 @@ cd vcpkg
 
 1. Edit the System Environment Variables -> Environment Variables -> New
 2. {"VCPKG_ROOT": "C:\vcpkg" <or other path>}
+3. Edit Path -> Add "%VCPKG_ROOT%"
 
 ##### Mac/Linux
 
@@ -85,26 +106,7 @@ export PATH=$VCPKG_ROOT:$PATH  # Optional: lets you type 'vcpkg' anywhere
 2. CMake: `cmake --version`
 3. vcpkg: `vcpkg version`
 
-## 📚 Documentation
-
-Documentation is integrated directly into the CMake build process.
-
-### Initializing Doxygen
-
-1. Generate the default "Doxyfile" using `doxygen -g`.
-2. Make the following edits to the Doxyfile keys:
-   1. `PROJECT_NAME = "Project Name"`
-   2. `RECURSIVE = YES` (Scans the "./src/ folder)
-   3. `OUTPUT_DIRECTORY = docs` (Where the HTML is saved)
-   4. `USE_MDFILE_AS_MAINPAGE = README.md` (Makes the README the "Home" page)
-
-### Generating Docs
-You can generate the HTML documentation using the `docs` target:
-``` bash
-cmake --build build --target docs
-```
-
 # Using CMake
 
-1. Configure: `cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=[path_to_vcpkg]/scripts/buildsystems/vcpkg.cmake`
-2. Build: `cmake --build build`
+1. Configure (First time only): `cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=[path_to_vcpkg]/scripts/buildsystems/vcpkg.cmake`
+2. Build (Every additional time): `cmake --build build`
