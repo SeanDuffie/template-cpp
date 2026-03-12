@@ -34,7 +34,8 @@ jobs:
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
-          vcpkgGitCommitId: 'latest' # Or a specific commit for stability
+          # vcpkgGitCommitId: 'latest' # Or a specific commit for stability
+          vcpkgGitCommitId: '5568f110b509a9fd90711952a7c1875100ee5254'
         # run: |
         #   if [ "$RUNNER_OS" == "Windows" ]; then
         #     $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
