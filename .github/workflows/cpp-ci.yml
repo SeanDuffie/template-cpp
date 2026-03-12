@@ -22,8 +22,8 @@ jobs:
             triplet: x64-windows-static
             preset: windows-static
           - os: macos-latest
-            triplet: x64-osx
-            preset: macos-x64
+            triplet: arm64-osx
+            preset: macos-arm64
 
     env:
       VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
@@ -37,6 +37,10 @@ jobs:
           script: |
             core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
             core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Setup MSVC (Windows Only)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Setup CMake
         uses: jwlawson/actions-setup-cmake@v2

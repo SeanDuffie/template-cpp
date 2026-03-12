@@ -27,11 +27,11 @@
       }
     },
     {
-      "name": "macos-x64",
+      "name": "macos-arm64",
       "inherits": "base",
-      "displayName": "macOS x64",
+      "displayName": "macOS arm64",
       "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-osx"
+        "VCPKG_TARGET_TRIPLET": "arm64-osx"
       }
     }
   ]
