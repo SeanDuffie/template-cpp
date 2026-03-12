@@ -17,10 +17,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            triplet: linux-x64
+          - os: windows-latest
+            triplet: windows-static
+          - os: macos-latest
+            triplet: macos-x64
 
     env:
       VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
-      VCPKG_DEFAULT_TRIPLET: ${{ matrix.os == 'Windows' && 'x64-windows-static' || (matrix.os == 'macOS' && 'x64-osx' || 'x64-linux') }}
 
     steps:
       - uses: actions/checkout@v4
@@ -32,32 +38,19 @@ jobs:
             core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
             core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
-      - name: Setup vcpkg
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            # git clone https://github.com/microsoft/vcpkg.git
-            # ./vcpkg/bootstrap-vcpkg.bat
-            # ./vcpkg integrate install
-            $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
-          else
-            # git clone https://github.com/microsoft/vcpkg.git
-            # ./vcpkg/bootstrap-vcpkg.sh
-            # ./vcpkg integrate install
-            $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
-          fi
-        shell: bash
-
       - name: Setup CMake
         uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: '4.0'
 
       - name: Configure CMake
-        # We point to the vcpkg toolchain already present on GitHub runners
         run: >
-          cmake -B build -S . \
-          -G Ninja \
-          -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
+          cmake --preset ${{ matrix.preset }}
+          # cmake -B build -S . 
+          # -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake 
+          # -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} 
+          # -DCMAKE_BUILD_TYPE=Release
+        shell: bash
 
       - name: Build
         run: cmake --build build --config Release

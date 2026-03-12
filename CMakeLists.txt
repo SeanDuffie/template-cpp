@@ -1,6 +1,4 @@
 cmake_minimum_required(VERSION 4.0)
-set(VCPKG_TARGET_TRIPLET "x64-windows-static" CACHE STRING "")
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
 
 
 # Project Metadata
