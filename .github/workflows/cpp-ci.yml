@@ -32,23 +32,19 @@ jobs:
             core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
       - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          # vcpkgGitCommitId: 'latest' # Or a specific commit for stability
-          vcpkgGitCommitId: '5568f110b509a9fd90711952a7c1875100ee5254'
-        # run: |
-        #   if [ "$RUNNER_OS" == "Windows" ]; then
-        #     $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
-        #   else
-        #     $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
-        #   fi
-        # shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
+          else
+            $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
+          fi
+        shell: bash
 
       - name: Configure CMake
         # We point to the vcpkg toolchain already present on GitHub runners
         run: >
           cmake -B build -S . 
-          -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+          -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: cmake --build build --config Release
