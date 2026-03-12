@@ -20,6 +20,7 @@ jobs:
 
     env:
       VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+      VCPKG_DEFAULT_TRIPLET: ${{ matrix.os == 'Windows' && 'x64-windows-static' || (matrix.os == 'macOS' && 'x64-osx' || 'x64-linux') }}
 
     steps:
       - uses: actions/checkout@v4
@@ -34,8 +35,14 @@ jobs:
       - name: Setup vcpkg
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
+            # git clone https://github.com/microsoft/vcpkg.git
+            # ./vcpkg/bootstrap-vcpkg.bat
+            # ./vcpkg integrate install
             $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
           else
+            # git clone https://github.com/microsoft/vcpkg.git
+            # ./vcpkg/bootstrap-vcpkg.sh
+            # ./vcpkg integrate install
             $VCPKG_INSTALLATION_ROOT/vcpkg integrate install
           fi
         shell: bash
@@ -48,7 +55,8 @@ jobs:
       - name: Configure CMake
         # We point to the vcpkg toolchain already present on GitHub runners
         run: >
-          cmake -B build -S . 
+          cmake -B build -S . \
+          -G Ninja \
           -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
